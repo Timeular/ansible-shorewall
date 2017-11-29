@@ -1,12 +1,11 @@
 ###############################################################################
 # {{ ansible_managed }}
 #
-#  Shorewall Version 4 -- /etc/shorewall6/shorewall6.conf
+#  Shorewall Version 4 -- /etc/shorewall/shorewall.conf
 #
-#  For information about the settings in this file, type "man shorewall6.conf"
+#  For information about the settings in this file, type "man shorewall.conf"
 #
-#  Manpage also online at
-#  http://www.shorewall.net/manpages6/shorewall6.conf.html
+#  Manpage also online at http://www.shorewall.net/manpages/shorewall.conf.html
 ###############################################################################
 #		       S T A R T U P   E N A B L E D
 ###############################################################################
@@ -17,7 +16,7 @@ STARTUP_ENABLED=Yes
 #			     V E R B O S I T Y
 ###############################################################################
 
-VERBOSITY={{ shorewall6_verbosity }}
+VERBOSITY={{ shorewall_verbosity }}
 
 ###############################################################################
 #			       L O G G I N G
@@ -29,17 +28,19 @@ INVALID_LOG_LEVEL=
 
 LOG_BACKEND=
 
-LOG_VERBOSITY={{ shorewall6_log_verbosity }}
+LOG_MARTIANS=Yes
+
+LOG_VERBOSITY={{ shorewall_log_verbosity }}
 
 LOGALLNEW=
 
-LOGFILE={{ shorewall6_logfile }}
+LOGFILE={{ shorewall_logfile}}/var/log/messages
 
 LOGFORMAT="Shorewall:%s:%s:"
 
-LOGLIMIT=
-
 LOGTAGONLY=No
+
+LOGLIMIT=
 
 MACLIST_LOG_LEVEL=info
 
@@ -51,7 +52,7 @@ SFILTER_LOG_LEVEL=info
 
 SMURF_LOG_LEVEL=info
 
-STARTUP_LOG=/var/log/shorewall6-init.log
+STARTUP_LOG=/var/log/shorewall-init.log
 
 TCP_FLAGS_LOG_LEVEL=info
 
@@ -61,11 +62,13 @@ UNTRACKED_LOG_LEVEL=
 #	L O C A T I O N	  O F	F I L E S   A N D   D I R E C T O R I E S
 ###############################################################################
 
-CONFIG_PATH="${CONFDIR}/shorewall6:/usr/share/shorewall6:${SHAREDIR}/shorewall"
+ARPTABLES=
+
+CONFIG_PATH="${CONFDIR}/shorewall:${SHAREDIR}/shorewall"
 
 GEOIPDIR=/usr/share/xt_geoip/LE
 
-IP6TABLES=
+IPTABLES=
 
 IP=
 
@@ -77,9 +80,9 @@ MODULESDIR=
 
 NFACCT=
 
-PERL=/usr/bin/perl
-
 PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin"
+
+PERL=/usr/bin/perl
 
 RESTOREFILE=restore
 
@@ -114,6 +117,10 @@ ACCOUNTING=Yes
 
 ACCOUNTING_TABLE=filter
 
+ADD_IP_ALIASES=No
+
+ADD_SNAT_ALIASES=No
+
 ADMINISABSENTMINDED=Yes
 
 BASIC_FILTERS=No
@@ -132,13 +139,17 @@ CHAIN_SCRIPTS=Yes
 
 CLAMPMSS=No
 
-CLEAR_TC=No
+CLEAR_TC=Yes
 
 COMPLETE=No
 
 DEFER_DNS_RESOLUTION=Yes
 
 DELETE_THEN_ADD=Yes
+
+DETECT_DNAT_IPADDRS=No
+
+DISABLE_IPV6=No
 
 DONT_LOAD=
 
@@ -150,7 +161,7 @@ EXPORTMODULES=Yes
 
 FASTACCEPT=No
 
-FORWARD_CLEAR_MARK=Yes
+FORWARD_CLEAR_MARK=
 
 HELPERS=
 
@@ -162,9 +173,9 @@ IPSET_WARNINGS=Yes
 
 IP_FORWARDING=Keep
 
-KEEP_RT_TABLES=Yes
+KEEP_RT_TABLES=No
 
-LEGACY_FASTSTART=No
+LEGACY_FASTSTART=Yes
 
 LOAD_HELPERS_ONLY=Yes
 
@@ -174,11 +185,17 @@ MACLIST_TTL=
 
 MANGLE_ENABLED=Yes
 
+MAPOLDACTIONS=No
+
 MARK_IN_FORWARD_CHAIN=No
 
 MODULE_SUFFIX=ko
 
+MULTICAST=No
+
 MUTEX_TIMEOUT=60
+
+NULL_ROUTE_RFC1918=No
 
 OPTIMIZE=0
 
@@ -188,11 +205,19 @@ REJECT_ACTION=
 
 REQUIRE_INTERFACE=No
 
+RESTORE_DEFAULT_ROUTE=Yes
+
 RESTORE_ROUTEMARKS=Yes
+
+RETAIN_ALIASES=No
+
+ROUTE_FILTER=Yes
+
+SAVE_ARPTABLES=No
 
 SAVE_IPSETS=No
 
-TC_ENABLED=No
+TC_ENABLED=Internal
 
 TC_EXPERT=No
 
@@ -224,11 +249,11 @@ MACLIST_DISPOSITION=REJECT
 
 RELATED_DISPOSITION=ACCEPT
 
-SFILTER_DISPOSITION=DROP
-
 RPFILTER_DISPOSITION=DROP
 
 SMURF_DISPOSITION=DROP
+
+SFILTER_DISPOSITION=DROP
 
 TCP_FLAGS_DISPOSITION=DROP
 
@@ -247,3 +272,10 @@ PROVIDER_OFFSET=
 MASK_BITS=
 
 ZONE_BITS=0
+
+################################################################################
+#			     L E G A C Y  O P T I O N
+#		       D O  N O T  D E L E T E	O R  A L T E R
+################################################################################
+
+IPSECFILE=zones

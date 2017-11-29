@@ -8,6 +8,9 @@ shorewall6_startup: 1
 shorewall_verbosity: 1
 shorewall6_verbosity: 1
 
+shorewall_logfile: /var/log/messages
+shorewall6_logfile: /var/log/messages
+
 shorewall_log_verbosity: 2
 shorewall6_log_verbosity: 2
 
